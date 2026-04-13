@@ -2,4 +2,8 @@
 .env
 venv/
 research/
+dist/
+build/
+main.spec
+.DS_Store
 
