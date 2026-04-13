@@ -1,0 +1,36 @@
+name: Build Executables
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.11'
+    
+    - name: Install dependencies
+      run: pip install pyinstaller requests python-dotenv
+    
+    - name: Build executable
+      run: pyinstaller --onefile --exclude-module PyQt5 --exclude-module PySide6 main.py
+    
+    - name: Upload to release
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        upload_url: ${{ github.event.release.upload_url }}
+        asset_path: ./dist/main${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+        asset_name: lb2obsd-${{ matrix.os }}${{ matrix.os == 'windows-latest' && '.exe' || '' }}
+        asset_content_type: application/octet-stream
