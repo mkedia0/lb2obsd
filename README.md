@@ -42,3 +42,8 @@ Your Obsidian vault will be organized into:
 - `directors/` — one note per director linking to all their movies
 - `genres/` — one note per genre linking to all movies in that genre
 - `years/` — one note per year linking to all movies watched that year
+
+## Credits
+- Movie data from [TMDB](https://www.themoviedb.org/)
+- Watch history from [Letterboxd](https://letterboxd.com/)
+- Built with help from Claude (Anthropic), specifically for help with csv file interpretation syntax and features
