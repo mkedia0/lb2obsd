@@ -24,7 +24,6 @@ Turn your Letterboxd diary into a linked Obsidian vault.
 ```bash
    pip install -r requirements.txt
 ```
-3. Create a `.env` file based on `.env.example` and add your TMDB API key
 
 ## Usage
 1. Export your Letterboxd data at [letterboxd.com/settings/data](https://letterboxd.com/settings/data)
@@ -46,4 +45,4 @@ Your Obsidian vault will be organized into:
 ## Credits
 - Movie data from [TMDB](https://www.themoviedb.org/)
 - Watch history from [Letterboxd](https://letterboxd.com/)
-- Built with help from Claude (Anthropic), specifically for help with csv file interpretation syntax and features
+- Built with help from Claude (Anthropic), specifically for help with csv file interpretation syntax and code completion
