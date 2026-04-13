@@ -2,6 +2,8 @@ import os
 import requests
 from dotenv import load_dotenv
 import csv
+import sys
+sys.stdout.flush()
 
 load_dotenv()
 
@@ -15,11 +17,15 @@ def search_movie(title, year):
         "year": year
     }
     response = requests.get(url, params=params)
-    results = response.json()["results"]
+    data = response.json()
+    if "results" not in data:
+        print(f"TMDB API error: {data}")
+        return None
+    results = data["results"]
     if results:
         return results[0]["id"]
-    else:
-        return None 
+    return None
+    
     
 def get_movie_details(movie_id):
     url = f"https://api.themoviedb.org/3/movie/{movie_id}"
@@ -157,9 +163,17 @@ def process_csv(csv_path, reviews_csv_path, output_path):
 
 
 if __name__ == "__main__":
-    csv_path = input("Enter path to your Letterboxd diary.csv file: ")
-    reviews_csv_path = input("Enter path to your Letterboxd reviews.csv file (or leave blank if not available): ")
-    output_path = input("Enter path to save Obsidian notes: ")
+    if not TMDB_API_KEY:
+        print("Welcome to lb2obsd!")
+        print("Get a free TMDB API key at: https://www.themoviedb.org/settings/api")
+        key = input("Enter your TMDB API key: ").strip()
+        with open(".env", "w") as f:
+            f.write(f"TMDB_API_KEY={key}\n")
+        os.environ["TMDB_API_KEY"] = key
+        print("API key saved! You won't need to enter this again.\n")
+    csv_path = input("Enter path to your Letterboxd diary.csv file: ").strip()
+    reviews_csv_path = input("Enter path to your Letterboxd reviews.csv file (or leave blank if not available): ").strip()
+    output_path = input("Enter path to save Obsidian notes: ").strip()
     process_csv(csv_path, reviews_csv_path, output_path)
             
     
